@@ -1,9 +1,22 @@
+import { useState } from "react";
 import pets from "../petsData";
 import PetItem from "./PetItem";
 
 function PetsList() {
-  const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const [serachQuery, setSerachQuery] = useState("");
 
+  const filteredPets = pets.filter((pet) => {
+    if (pet.name.toLowerCase().includes(serachQuery).toLowerCase()) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  const petList = filteredPets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+
+  const handleChange = (event) => {
+    setSerachQuery(event.target.value);
+  };
   return (
     <section id="doctors" className="doctor-section pt-140">
       <div className="container">
@@ -13,6 +26,7 @@ function PetsList() {
               <h1 className="mb-25 wow fadeInUp" data-wow-delay=".2s">
                 Fur-ends
               </h1>
+              <h6>{serachQuery}</h6>
               <div className="input-group rounded">
                 <input
                   type="search"
@@ -20,6 +34,7 @@ function PetsList() {
                   placeholder="Search"
                   aria-label="Search"
                   aria-describedby="search-addon"
+                  onChange={handleChange}
                 />
               </div>
               <br />
